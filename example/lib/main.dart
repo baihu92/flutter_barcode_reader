@@ -10,7 +10,7 @@ void main() {
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -23,29 +23,32 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text('Barcode Scanner Example'),
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('Barcode Scanner Example'),
           ),
-          body: new Center(
-            child: new Column(
-              children: <Widget>[
-                new Container(
-                  child: new MaterialButton(
-                      onPressed: scan, child: new Text("Scan")),
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                new Text(barcode),
-              ],
-            ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: RaisedButton(onPressed: scan, child: Text("Scan")),
+                padding: EdgeInsets.all(18.0),
+              ),
+              Text(barcode),
+            ],
           )),
     );
   }
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      String barcode = await BarcodeScanner.scan(
+        backTitle: 'Назад',
+        flashOnTitle: 'Включить',
+        flashOffTitle: 'Выключить',
+      );
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -55,8 +58,9 @@ class _MyAppState extends State<MyApp> {
       } else {
         setState(() => this.barcode = 'Unknown error: $e');
       }
-    } on FormatException{
-      setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } on FormatException {
+      setState(() => this.barcode =
+          'null (User returned using the "back"-button before scanning anything. Result)');
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
     }

@@ -1,3 +1,7 @@
+## [1.1.0] - 7/24/19
+
+Localization of buttons.
+
 ## [1.0.0] - 8/30/18
 
 Breaking Change: Adds support for AndroidX
