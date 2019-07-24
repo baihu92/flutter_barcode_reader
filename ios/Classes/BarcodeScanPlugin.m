@@ -12,15 +12,21 @@
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if ([@"scan" isEqualToString:call.method]) {
+        NSString *flashOnTitle = call.arguments[@"flashOnTitle"];
+        NSString *flashOffTitle = call.arguments[@"flashOffTitle"];
+        NSString *backTitle = call.arguments[@"backTitle"];
         self.result = result;
-        [self showBarcodeView];
+        [self showBarcodeView :flashOnTitle :flashOffTitle : backTitle];
     } else {
         result(FlutterMethodNotImplemented);
     }
 }
 
-- (void)showBarcodeView {
+- (void)showBarcodeView:(NSString *)flashOnTitle :(NSString *)flashOffTitle :(NSString *)backTitle  {
     BarcodeScannerViewController *scannerViewController = [[BarcodeScannerViewController alloc] init];
+    scannerViewController.flashOnTitle = flashOnTitle;
+    scannerViewController.flashOffTitle = flashOffTitle;
+    scannerViewController.backTitle = backTitle;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:scannerViewController];
     scannerViewController.delegate = self;
     [self.hostViewController presentViewController:navigationController animated:NO completion:nil];
