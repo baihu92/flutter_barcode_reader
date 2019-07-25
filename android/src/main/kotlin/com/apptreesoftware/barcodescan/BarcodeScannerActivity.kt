@@ -2,13 +2,18 @@ package com.apptreesoftware.barcodescan
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Window
+import android.widget.Button
+import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import android.view.Menu
-import android.view.MenuItem
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
@@ -21,44 +26,47 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
 
     companion object {
         const val REQUEST_TAKE_PHOTO_CAMERA_PERMISSION = 100
-        const val TOGGLE_FLASH = 200
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         val intent = this.intent
         flashOnTitle = intent.getStringExtra("flashOnTitle")
         flashOffTitle = intent.getStringExtra("flashOffTitle")
+        val fontName = intent.getStringExtra("fontName")
 
         title = ""
         scannerView = ZXingScannerView(this)
         scannerView.setAutoFocus(true)
         // this paramter will make your HUAWEI phone works great!
         scannerView.setAspectTolerance(0.5f)
-        setContentView(scannerView)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (scannerView.flash) {
-            val item = menu.add(0,
-                    TOGGLE_FLASH, 0, flashOffTitle)
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        } else {
-            val item = menu.add(0,
-                    TOGGLE_FLASH, 0, flashOnTitle)
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        }
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == TOGGLE_FLASH) {
+        val flashButton = Button(this)
+        flashButton.setBackgroundColor(Color.TRANSPARENT)
+        flashButton.setTextColor(Color.WHITE)
+        flashButton.setOnClickListener {
             scannerView.flash = !scannerView.flash
-            this.invalidateOptionsMenu()
-            return true
+            flashButton.text = if (scannerView.flash) flashOffTitle else flashOnTitle
         }
-        return super.onOptionsItemSelected(item)
+
+        if (fontName != null && fontName.isNotEmpty())
+            flashButton.typeface = Typeface.createFromAsset(assets, "fonts/$fontName")
+
+        val px = DisplayUtil.convertDpToPixel(14f, this)
+        flashButton.setPadding(px, px, px, px)
+        flashButton.text = if (scannerView.flash) flashOffTitle else flashOnTitle
+        val textViewLayoutParams = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        textViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+
+        val layout = RelativeLayout(this)
+        layout.addView(scannerView)
+        layout.addView(flashButton, textViewLayoutParams)
+        setContentView(layout)
     }
 
     override fun onResume() {
@@ -136,5 +144,29 @@ object PermissionUtil {
             }
         }
         return true
+    }
+}
+
+object DisplayUtil {
+    /**
+     * This method converts dp unit to equivalent pixels, depending on device density.
+     *
+     * @param dp A value in dp (density independent pixels) unit. Which we need to convert into pixels
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent px equivalent to dp depending on device density
+     */
+    fun convertDpToPixel(dp: Float, context: Context): Int {
+        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    fun convertPixelsToDp(px: Float, context: Context): Float {
+        return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 }

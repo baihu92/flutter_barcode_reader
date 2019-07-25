@@ -45,9 +45,10 @@ class _MyAppState extends State<MyApp> {
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan(
-        backTitle: 'Назад',
-        flashOnTitle: 'Включить',
-        flashOffTitle: 'Выключить',
+        backTitle: 'დახურვა',
+        flashOnTitle: 'განათება On',
+        flashOffTitle: 'განათება Off',
+        fontName: 'ObelixPro.ttf',
       );
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
