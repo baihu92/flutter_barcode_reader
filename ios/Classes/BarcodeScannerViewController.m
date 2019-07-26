@@ -41,7 +41,7 @@
                              views:@{@"scanRect": _scanRect}]];
   [_scanRect startAnimating];
     self.scanner = [[MTBBarcodeScanner alloc] initWithPreviewView:_previewView];
-    self.navigationItem.leftBarButtonItem = [self createUIButton:_backTitle];
+    self.navigationItem.leftBarButtonItem = [self createUIButton:_backTitle :@selector(cancel)];
   [self updateFlashButton];
 }
 
@@ -90,20 +90,19 @@
     }
     
     if ([self isFlashOn]) {
-        self.navigationItem.rightBarButtonItem = [self createUIButton :_flashOffTitle];
+        self.navigationItem.rightBarButtonItem = [self createUIButton :_flashOffTitle :@selector(toggle)];
     } else {
-        self.navigationItem.rightBarButtonItem = [self createUIButton :_flashOnTitle];
+        self.navigationItem.rightBarButtonItem = [self createUIButton :_flashOnTitle :@selector(toggle)];
     }
 }
 
-- (UIBarButtonItem *)createUIButton: (NSString*)title {
+- (UIBarButtonItem *)createUIButton: (NSString*)title :(nullable SEL)action {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title
                                                                style:UIBarButtonItemStylePlain
-                                                              target:self action:@selector(toggle)];
+                                                              target:self action:action];
     [button setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                     [UIFont fontWithName:_fontName size:12.0], NSFontAttributeName,
-                                    [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0], NSForegroundColorAttributeName,
-                                    nil]  forState:UIControlStateNormal];
+                                    [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
     
     return button;
 }
