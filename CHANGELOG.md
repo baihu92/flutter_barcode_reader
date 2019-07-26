@@ -1,3 +1,7 @@
+## [1.2.0] - 7/26/19
+
+Custom font of buttons.
+
 ## [1.1.0] - 7/24/19
 
 Localization of buttons.

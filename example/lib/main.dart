@@ -45,10 +45,11 @@ class _MyAppState extends State<MyApp> {
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan(
-        backTitle: 'Назад',
-        flashOnTitle: 'Включить',
-        flashOffTitle: 'Выключить',
-      );
+          backTitle: 'Back',
+          flashOnTitle: 'Flash On',
+          flashOffTitle: 'Flash Off',
+          fontName: 'ObelixPro',
+          fontFormat: 'ttf');
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
