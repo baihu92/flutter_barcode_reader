@@ -35,6 +35,7 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
         flashOnTitle = intent.getStringExtra("flashOnTitle")
         flashOffTitle = intent.getStringExtra("flashOffTitle")
         val fontName = intent.getStringExtra("fontName")
+        val fontFormat = intent.getStringExtra("fontFormat")
 
         title = ""
         scannerView = ZXingScannerView(this)
@@ -50,8 +51,8 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
             flashButton.text = if (scannerView.flash) flashOffTitle else flashOnTitle
         }
 
-        if (fontName != null && fontName.isNotEmpty())
-            flashButton.typeface = Typeface.createFromAsset(assets, "fonts/$fontName")
+        if (fontName != null && fontName.isNotEmpty() && fontFormat != null && fontFormat.isNotEmpty())
+            flashButton.typeface = Typeface.createFromAsset(assets, "fonts/$fontName.$fontFormat")
 
         val px = DisplayUtil.convertDpToPixel(14f, this)
         flashButton.setPadding(px, px, px, px)
