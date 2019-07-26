@@ -15,18 +15,20 @@
         NSString *flashOnTitle = call.arguments[@"flashOnTitle"];
         NSString *flashOffTitle = call.arguments[@"flashOffTitle"];
         NSString *backTitle = call.arguments[@"backTitle"];
+        NSString *fontName = call.arguments[@"fontName"];
         self.result = result;
-        [self showBarcodeView :flashOnTitle :flashOffTitle : backTitle];
+        [self showBarcodeView :flashOnTitle :flashOffTitle :backTitle :fontName];
     } else {
         result(FlutterMethodNotImplemented);
     }
 }
 
-- (void)showBarcodeView:(NSString *)flashOnTitle :(NSString *)flashOffTitle :(NSString *)backTitle  {
+- (void)showBarcodeView:(NSString *)flashOnTitle :(NSString *)flashOffTitle :(NSString *)backTitle :(NSString *)fontName {
     BarcodeScannerViewController *scannerViewController = [[BarcodeScannerViewController alloc] init];
     scannerViewController.flashOnTitle = flashOnTitle;
     scannerViewController.flashOffTitle = flashOffTitle;
     scannerViewController.backTitle = backTitle;
+    scannerViewController.fontName = fontName;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:scannerViewController];
     scannerViewController.delegate = self;
     [self.hostViewController presentViewController:navigationController animated:NO completion:nil];

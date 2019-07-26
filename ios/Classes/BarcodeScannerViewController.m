@@ -10,7 +10,6 @@
 @implementation BarcodeScannerViewController {
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.previewView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -42,9 +41,7 @@
                              views:@{@"scanRect": _scanRect}]];
   [_scanRect startAnimating];
     self.scanner = [[MTBBarcodeScanner alloc] initWithPreviewView:_previewView];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_backTitle
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self action:@selector(cancel)];
+    self.navigationItem.leftBarButtonItem = [self createUIButton:_backTitle];
   [self updateFlashButton];
 }
 
@@ -92,15 +89,23 @@
         return;
     }
     
-    if (self.isFlashOn) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_flashOffTitle
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self action:@selector(toggle)];
+    if ([self isFlashOn]) {
+        self.navigationItem.rightBarButtonItem = [self createUIButton :_flashOffTitle];
     } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_flashOnTitle
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self action:@selector(toggle)];
+        self.navigationItem.rightBarButtonItem = [self createUIButton :_flashOnTitle];
     }
+}
+
+- (UIBarButtonItem *)createUIButton: (NSString*)title {
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self action:@selector(toggle)];
+    [button setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIFont fontWithName:_fontName size:12.0], NSFontAttributeName,
+                                    [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0], NSForegroundColorAttributeName,
+                                    nil]  forState:UIControlStateNormal];
+    
+    return button;
 }
 
 - (void)toggle {

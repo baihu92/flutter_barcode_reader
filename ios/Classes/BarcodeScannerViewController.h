@@ -17,7 +17,8 @@
 @property(nonatomic, retain) NSString *flashOnTitle;
 @property(nonatomic, retain) NSString *flashOffTitle;
 @property(nonatomic, retain) NSString *backTitle;
+@property(nonatomic, retain) NSString *fontName;
 
-  
   -(id) initWithOptions:(NSDictionary *) options;
+  -(UIBarButtonItem*) createUIButton:(NSString *) title;
 @end
