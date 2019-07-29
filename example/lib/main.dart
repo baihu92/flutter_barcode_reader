@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           flashOnTitle: 'Flash On',
           flashOffTitle: 'Flash Off',
           fontName: 'ObelixPro',
-          fontFormat: 'ttf');
+          fontFile: 'ObelixPro.ttf');
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {

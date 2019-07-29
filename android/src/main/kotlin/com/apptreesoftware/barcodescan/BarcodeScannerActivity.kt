@@ -34,8 +34,7 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
         val intent = this.intent
         flashOnTitle = intent.getStringExtra("flashOnTitle")
         flashOffTitle = intent.getStringExtra("flashOffTitle")
-        val fontName = intent.getStringExtra("fontName")
-        val fontFormat = intent.getStringExtra("fontFormat")
+        val fontFile = intent.getStringExtra("fontFile")
 
         title = ""
         scannerView = ZXingScannerView(this)
@@ -51,8 +50,8 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
             flashButton.text = if (scannerView.flash) flashOffTitle else flashOnTitle
         }
 
-        if (fontName != null && fontName.isNotEmpty() && fontFormat != null && fontFormat.isNotEmpty())
-            flashButton.typeface = Typeface.createFromAsset(assets, "fonts/$fontName.$fontFormat")
+        if (fontFile != null && fontFile.isNotEmpty())
+            flashButton.typeface = Typeface.createFromAsset(assets, "fonts/$fontFile")
 
         val px = DisplayUtil.convertDpToPixel(14f, this)
         flashButton.setPadding(px, px, px, px)
@@ -158,16 +157,5 @@ object DisplayUtil {
      */
     fun convertDpToPixel(dp: Float, context: Context): Int {
         return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
-    }
-
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
-    fun convertPixelsToDp(px: Float, context: Context): Float {
-        return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 }

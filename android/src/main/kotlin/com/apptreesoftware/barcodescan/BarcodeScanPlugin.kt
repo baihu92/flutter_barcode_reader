@@ -29,23 +29,20 @@ class BarcodeScanPlugin(private val activity: Activity) : MethodCallHandler,
         if (call.method == "scan") {
             val flashOnTitle = call.argument("flashOnTitle") ?: "Flash On"
             val flashOffTitle = call.argument("flashOffTitle") ?: "Flash Off"
-            val fontName = call.argument<String>("fontName")
-            val fontFormat = call.argument<String>("fontFormat")
+            val fontFile = call.argument<String>("fontFile")
             this.result = result
-            showBarcodeView(flashOnTitle, flashOffTitle, fontName, fontFormat)
+            showBarcodeView(flashOnTitle, flashOffTitle, fontFile)
         } else {
             result.notImplemented()
         }
     }
 
-    private fun showBarcodeView(flashOnTitle: String, flashOffTitle: String, fontName: String?, fontFormat: String?) {
+    private fun showBarcodeView(flashOnTitle: String, flashOffTitle: String, fontFile: String?) {
         val intent = Intent(activity, BarcodeScannerActivity::class.java)
         intent.putExtra("flashOnTitle", flashOnTitle)
         intent.putExtra("flashOffTitle", flashOffTitle)
-        if (fontName != null)
-            intent.putExtra("fontName", fontName)
-        if (fontFormat != null)
-            intent.putExtra("fontFormat", fontFormat)
+        if (fontFile != null)
+            intent.putExtra("fontFile", fontFile)
         activity.startActivityForResult(intent, 100)
     }
 

@@ -103,6 +103,9 @@
     [button setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                     [UIFont fontWithName:_fontName size:12.0], NSFontAttributeName,
                                     [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    [button setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIFont fontWithName:_fontName size:12.0], NSFontAttributeName,
+                                    [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:0.8], NSForegroundColorAttributeName, nil] forState:UIControlStateHighlighted];
     
     return button;
 }
