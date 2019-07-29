@@ -12,14 +12,14 @@ class BarcodeScanner {
     String flashOffTitle = 'Flash Off',
     String backTitle = 'Back',
     String fontName,
-    String fontFormat,
+    String fontFile,
   }) async {
     return await _channel.invokeMethod('scan', {
       'flashOnTitle': flashOnTitle,
       'flashOffTitle': flashOffTitle,
       'backTitle': backTitle,
       'fontName': fontName,
-      'fontFormat': fontFormat
+      'fontFile': fontFile
     });
   }
 }
